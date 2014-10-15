@@ -54,9 +54,11 @@ if [[ -n $GLOBAL ]] && [[ -n $LOCAL ]]; then
   exit 1
 fi
 
-OPT=-l
 if [[ -n $GLOBAL ]]; then
-  OPT=-g
+  if [ "$(id -u)" != "0" ]; then
+     echo "This script must be run as root if you want a global install" 1>&2
+     exit 1
+  fi
 fi
 
 if [[ -n $VERBOSE ]]; then
@@ -68,6 +70,6 @@ if [[ -n $VERBOSE ]]; then
   OPT="$OPT -v"
 fi
 
-./zsh/install.sh $OPT
-./vim/install.sh $OPT
+./zsh/install.sh "$@"
+./vim/install.sh "$@"
 
